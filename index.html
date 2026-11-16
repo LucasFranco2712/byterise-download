@@ -1,55 +1,64 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e9d4a8">
-  <meta name="robots" content="noindex">
-  <title>ByteRise — Abrir o jogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ByteRise</title>
   <style>
-    * {box-sizing:border-box}
-    body {margin:0;background:#e9d4a8;color:#352c25;font:16px Arial,sans-serif;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
-    main {background:#f7eedb;border:3px solid #6a5540;box-shadow:6px 6px 0 #9f8565;padding:30px 24px;max-width:440px;width:100%;text-align:center}
-    h1 {font-size:35px;margin:0 0 8px;letter-spacing:1px} p {line-height:1.5}
-    .button {display:block;background:#7c9e58;color:#1c2417;text-decoration:none;padding:14px 16px;border:2px solid #435d30;font-weight:bold;margin-top:12px}
-    .secondary{background:#e4c794;color:#352c25;border-color:#8e704c}
-    small {display:block;margin-top:20px;color:#63584e;line-height:1.5}
-    #status{font-weight:bold}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: white;
+      color: #222;
+      text-align: center;
+    }
+    header {
+      background-color: #1675c5;
+      color: white;
+      padding: 18px;
+    }
+    h1 { margin: 0; font-size: 30px; }
+    main { padding: 45px 15px; }
+    p { line-height: 1.5; }
+    a.botao {
+      display: block;
+      background-color: #1675c5;
+      color: white;
+      padding: 12px;
+      margin: 12px auto;
+      width: 220px;
+      max-width: 85%;
+      text-decoration: none;
+    }
+    a.botao:hover { background-color: #095c9f; }
   </style>
 </head>
 <body>
-  <main>
+  <header>
     <h1>ByteRise</h1>
-    <p id="status">Detectando seu dispositivo...</p>
-    <a id="android" class="button" hidden>Baixar para Android (APK)</a>
-    <a id="online" class="button secondary" href="https://gx.games/games/iql6v6/com-karlsproplayes123s-byterise/tracks/2b437454-73b1-4b2b-8a3d-7e0c29b52f16/">Jogar online</a>
-    <small>Se o redirecionamento não acontecer, use um dos botões acima. No Android, pode ser necessário autorizar a instalação do APK.</small>
-  </main>
-  <script>
+  </header>
 
-    const APK_URL = 'https://github.com/LucasFranco2712/byterise-download/releases/latest/download/ByteRise.apk';
-    const GX_URL = 'https://gx.games/games/iql6v6/com-karlsproplayes123s-byterise/tracks/2b437454-73b1-4b2b-8a3d-7e0c29b52f16/';
-    const agent = navigator.userAgent || '';
-    const isAndroid = /Android/i.test(agent);
-    const apkConfigured = /^https:\/\//i.test(APK_URL);
-    const androidButton = document.querySelector('#android');
-    const onlineButton = document.querySelector('#online');
-    const status = document.querySelector('#status');
-    onlineButton.href = GX_URL;
-    if (apkConfigured) {
-      androidButton.href = APK_URL;
-      androidButton.hidden = false;
-    }
-    // ?teste=android ou ?teste=ios permite testar no computador, sem redirecionar.
-    const testing = new URLSearchParams(location.search).has('teste');
-    const destination = isAndroid && apkConfigured ? APK_URL : GX_URL;
-    if (testing) {
-      status.textContent = isAndroid ? 'Android detectado: download do APK.' : 'iPhone, iPad ou computador: jogo online.';
-    } else if (isAndroid && !apkConfigured) {
-      status.textContent = 'O download para Android ainda não foi configurado. Você pode jogar online.';
+  <main>
+    <h2>Jogue ByteRise!</h2>
+    <p>Baixe o jogo no Android ou jogue online.</p>
+    <p id="status">Verificando seu dispositivo...</p>
+
+    <a class="botao" id="android" href="https://github.com/LucasFranco2712/byterise-download/releases/latest/download/ByteRise.apk">Baixar para Android</a>
+    <a class="botao" id="online" href="https://gx.games/games/iql6v6/com-karlsproplayes123s-byterise/tracks/2b437454-73b1-4b2b-8a3d-7e0c29b52f16/">Jogar online</a>
+
+  </main>
+
+  <script>
+    const apk = document.getElementById('android').href;
+    const online = document.getElementById('online').href;
+    const android = /Android/i.test(navigator.userAgent);
+    const teste = new URLSearchParams(window.location.search).has('teste');
+
+    if (teste) {
+      document.getElementById('status').textContent = 'Escolha como deseja jogar:';
     } else {
-      status.textContent = isAndroid ? 'Abrindo o download do ByteRise...' : 'Abrindo o ByteRise no GX.games...';
-      location.replace(destination);
+      document.getElementById('status').textContent = 'Abrindo o jogo...';
+      window.location.replace(android ? apk : online);
     }
   </script>
 </body>
